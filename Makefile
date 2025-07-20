@@ -1,7 +1,6 @@
 # Compiler
 CXX = g++
-CXXFLAGS = -Wall -Wextra -std=c++17 -Iinclude
-
+CXXFLAGS = -Wall -Wextra -std=c++17 -Iinclude 
 # Paths
 SRC_DIR = src
 INC_DIR = include
@@ -13,7 +12,7 @@ SRCS = $(wildcard $(SRC_DIR)/*.cpp)
 OBJS = $(patsubst $(SRC_DIR)/%.cpp,$(OBJ_DIR)/%.o,$(SRCS))
 
 # Libraries
-LIBS = -lopengl32 -lglu32 -lgdi32
+LIBS = -lopengl32 -lglu32 -lgdi32 -lassimp -lstdc++ -lz 
 
 # Default rule
 all: $(BIN)

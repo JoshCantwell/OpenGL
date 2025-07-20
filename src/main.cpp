@@ -5,6 +5,7 @@
 #include <Windows.h>
 #include <gl/GL.h>
 #include <cmath>
+#include <assimp/Importer.hpp>
 
 int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE, LPSTR, int) {
     Window window(hInstance, 800, 600, "3D Sphere + Camera");
