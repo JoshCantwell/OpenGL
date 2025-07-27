@@ -3,6 +3,7 @@
 #include <windows.h>
 #include <gl/GL.h>
 #include <gl/GLU.h>
+#include "../include/ObjLoader.h"
 
 Renderer::Renderer() {
 	glEnable(GL_DEPTH_TEST);
@@ -38,17 +39,21 @@ void Renderer::draw(float angle, const Camera& camera) {
 
 	//glRotatef(angle, 0.0f, 1.0f, 0.0f);
 
-	GLfloat mat_diffuse[] = { 0.3f, 0.6f, 1.0f, 1.0f };
+	GLfloat mat_diffuse[] = { 0.0f, 1.6f, 0.0f, 1.0f };
 	glMaterialfv(GL_FRONT, GL_DIFFUSE, mat_diffuse);
 
+	ObjLoader obj;
 
+    
+	obj.make_obj_mesh("../assets/Cube.obj");
+	
 	// --- Draw checkerboard floor ---
 	glPushMatrix();
 	glDisable(GL_LIGHTING); // Optional: flat colors look better for checkerboard
 
 	const int size = 20;      // 20x20 tiles
 	const float tileSize = 1.0f;
-	const float floorY = -1.0f;
+	const float floorY = -3.0f;
 
 	for (int x = -size / 2; x < size / 2; ++x) {
 		for (int z = -size / 2; z < size / 2; ++z) {
