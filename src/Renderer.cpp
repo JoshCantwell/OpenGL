@@ -1,9 +1,9 @@
-#include "../include/Renderer.h"
-#include "../include/Camera.h"
+#include <Renderer.h>
+#include <Camera.h>
 #include <windows.h>
 #include <gl/GL.h>
 #include <gl/GLU.h>
-#include "../include/ObjLoader.h"
+#include <ObjLoader.h>
 
 Renderer::Renderer() {
 	glEnable(GL_DEPTH_TEST);
@@ -45,13 +45,12 @@ void Renderer::draw(float angle, const Camera& camera) {
 	ObjLoader obj;
 
     
-	obj.make_obj_mesh("../assets/Cube.obj");
 	
 	// --- Draw checkerboard floor ---
 	glPushMatrix();
 	glDisable(GL_LIGHTING); // Optional: flat colors look better for checkerboard
 
-	const int size = 20;      // 20x20 tiles
+	const int size = 100;      // 20x20 tiles
 	const float tileSize = 1.0f;
 	const float floorY = -3.0f;
 

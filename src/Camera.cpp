@@ -1,5 +1,5 @@
-#include "../include/Camera.h"
-#include "../include/Input.h"
+#include <Camera.h>
+#include <Input.h>
 #include <cmath>
 #include <gl/GLU.h>
 

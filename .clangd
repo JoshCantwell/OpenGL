@@ -1,0 +1,9 @@
+CompileFlags:
+  Add:
+    - -IC:/Libraries/imgui 
+    - -IC:/Libraries/glm
+    - -IC:/Libraries/glfw-3.4/include
+    - -IC:/Libraries/glad/include
+    - -IC:/Users/joshDope/Documents/cppCode/OpenGL/include
+    - -IC:/Libraries/assimp/include
+  

@@ -1,24 +1,28 @@
-#include "../include/Window.h"
-#include "../include/Input.h"
-#include "../include/Camera.h"
-#include "../include/Renderer.h"
-#include "../include/ObjLoader.h"
-
+#include <Window.h>
+#include <Input.h>
+#include <Camera.h>
+#include <Renderer.h>
+#include <ObjLoader.h>
 #include <Windows.h>
 #include <gl/GL.h>
 #include <cmath>
 #include <assimp/Importer.hpp>
-
-
+#include <imgui.h>
+#include <backends/imgui_impl_win32.h>
+#include <backends/imgui_impl_opengl3.h>
 
 
 
 
 int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE, LPSTR, int) {
-	Window window(hInstance, 800, 600, "3D Sphere + Camera");
+
+
+	Window window(hInstance, 1200, 900, "3D Sphere + Camera");
 	Input input;
 	Camera camera;
 	Renderer renderer;
+
+	bool isPaused = false;
 
 	ShowCursor(FALSE);
 
@@ -26,13 +30,44 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE, LPSTR, int) {
 
 
 	while (window.processMessages()) {
-		input.update(window.getHWND()); // pass HWND
-		camera.update(input);
+
+		if (input.keyPressed('P')) {
+			isPaused = !isPaused;
+		}
+
+
+		if(isPaused){
+			ImGui_ImplOpenGL3_NewFrame();
+			ImGui_ImplWin32_NewFrame();
+			ImGui::NewFrame();
+			ImGui::Begin("Hello, ImGui!");
+			ImGui::Text("This is an ImGui window!");
+			ImGui::End();
+
+		}
+
+		input.update(window.getHWND(), isPaused); // pass HWND
+		if (isPaused) {
+			ShowCursor(TRUE);
+		} else {
+			ShowCursor(FALSE);
+			camera.update(input);  // Only update camera when not paused
+		}	
 		renderer.draw(angle, camera);
+
+
+		if (isPaused){
+			ImGui::Render();
+			ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
+		}
+
+
+
+
 		SwapBuffers(window.getHDC());
 
 		//angle = fmod(angle + 0.5f, 360.0f);
-		
+
 		if (input.keyDown(VK_ESCAPE)) {
 			break;  // break out of your game loop
 		}
