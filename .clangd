@@ -1,5 +1,6 @@
 CompileFlags:
   Add:
+    - -IC:/Libraries/SDL3-3.2.20/x86_64-w64-mingw32/include
     - -IC:/Libraries/imgui 
     - -IC:/Libraries/glm
     - -IC:/Libraries/glfw-3.4/include

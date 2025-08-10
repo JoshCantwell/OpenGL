@@ -1,3 +1,4 @@
+#include <SDL3/SDL.h>
 #include <Window.h>
 #include <Input.h>
 #include <Camera.h>
@@ -16,6 +17,11 @@
 
 int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE, LPSTR, int) {
 
+	if (SDL_Init(SDL_INIT_AUDIO) != 0) {
+		std::cerr << "SDL_Init Error: " << SDL_GetError() << std::endl;
+		return 1;
+	}
+	std::cout << "SDL audio initialized successfully!\n";
 
 	Window window(hInstance, 1200, 900, "3D Sphere + Camera");
 	Input input;
@@ -78,6 +84,7 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE, LPSTR, int) {
 
 	}
 
+	SDL_Quit();
 	return 0;
 }
 

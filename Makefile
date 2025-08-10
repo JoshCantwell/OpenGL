@@ -1,3 +1,7 @@
+SDL3_DIR = C:/Libraries/SDL3-3.2.20/x86_64-w64-mingw32
+SDL3_INC = $(SDL3_DIR)/include
+SDL3_LIB = $(SDL3_DIR)/lib
+
 # ImGui paths
 IMGUI_DIR = C:/Libraries/imgui
 IMGUI_BACKENDS = $(IMGUI_DIR)/backends
@@ -33,14 +37,14 @@ GLFW_INC = C:/Libraries/glfw-3.4/include
 GLFW_LIB = C:/Libraries/glfw-3.4/lib
 
 # Include paths
-INCLUDES = -Iinclude -I$(GLAD_INC) -I$(GLFW_INC) -I$(IMGUI_DIR) -I$(IMGUI_BACKENDS)
+INCLUDES = -Iinclude -I$(GLAD_INC) -I$(GLFW_INC) -I$(IMGUI_DIR) -I$(IMGUI_BACKENDS) -I$(SDL3_INC)
 
 # Compiler flags
 CXXFLAGS = -Wall -Wextra -std=c++17 $(INCLUDES) -I$(GLM_INC)
 CFLAGS   = -Wall $(INCLUDES)
 
 # Libraries
-LIBS = -L$(GLFW_LIB) -lglfw3 -lopengl32 -lglu32 -lgdi32 -ldwmapi
+LIBS = -L$(GLFW_LIB) -lglfw3 -lopengl32 -lglu32 -lgdi32 -ldwmapi -L$(SDL3_LIB) -lSDL3
 
 # Sources
 CPP_SRCS = $(wildcard $(SRC_DIR)/*.cpp)
