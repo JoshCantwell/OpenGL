@@ -1,6 +1,11 @@
-SDL3_DIR = C:/Libraries/SDL3-3.2.20/x86_64-w64-mingw32
-SDL3_INC = $(SDL3_DIR)/include
-SDL3_LIB = $(SDL3_DIR)/lib
+SDL2_DIR = C:/Libraries/SDL2-2.28.5/x86_64-w64-mingw32
+SDL2_INC = $(SDL2_DIR)/include
+SDL2_LIB = $(SDL2_DIR)/lib
+
+SDL2_MIXER_DIR = C:/Libraries/SDL2_mixer-2.8.1/x86_64-w64-mingw32
+SDL2_MIXER_INC = $(SDL2_MIXER_DIR)/include
+SDL2_MIXER_LIB = $(SDL2_MIXER_DIR)/lib
+
 
 # ImGui paths
 IMGUI_DIR = C:/Libraries/imgui
@@ -37,14 +42,14 @@ GLFW_INC = C:/Libraries/glfw-3.4/include
 GLFW_LIB = C:/Libraries/glfw-3.4/lib
 
 # Include paths
-INCLUDES = -Iinclude -I$(GLAD_INC) -I$(GLFW_INC) -I$(IMGUI_DIR) -I$(IMGUI_BACKENDS) -I$(SDL3_INC)
+INCLUDES = -Iinclude -I$(GLAD_INC) -I$(GLFW_INC) -I$(IMGUI_DIR) -I$(IMGUI_BACKENDS) -I$(SDL2_INC) -I$(SDL2_MIXER_INC)
 
 # Compiler flags
 CXXFLAGS = -Wall -Wextra -std=c++17 $(INCLUDES) -I$(GLM_INC)
 CFLAGS   = -Wall $(INCLUDES)
 
 # Libraries
-LIBS = -L$(GLFW_LIB) -lglfw3 -lopengl32 -lglu32 -lgdi32 -ldwmapi -L$(SDL3_LIB) -lSDL3
+LIBS = -L$(GLFW_LIB) -lglfw3 -lopengl32 -lglu32 -lgdi32 -ldwmapi -L$(SDL2_LIB) -L$(SDL2_MIXER_LIB) -lSDL2main -lSDL2 -lSDL2_mixer -mwindows
 
 # Sources
 CPP_SRCS = $(wildcard $(SRC_DIR)/*.cpp)

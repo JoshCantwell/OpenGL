@@ -1,10 +1,12 @@
 CompileFlags:
   Add:
+    - -IC:/Libraries/SDL2-2.28.5/x86_64-w64-mingw32/include
     - -IC:/Libraries/SDL3-3.2.20/x86_64-w64-mingw32/include
     - -IC:/Libraries/imgui 
     - -IC:/Libraries/glm
     - -IC:/Libraries/glfw-3.4/include
     - -IC:/Libraries/glad/include
+    - -IC:/Users/joshDope/Documents/cppCode/OpenGL/assets
     - -IC:/Users/joshDope/Documents/cppCode/OpenGL/include
     - -IC:/Libraries/assimp/include
   

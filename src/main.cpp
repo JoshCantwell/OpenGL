@@ -1,7 +1,7 @@
-#include <SDL3/SDL.h>
 #include <Window.h>
 #include <Input.h>
 #include <Camera.h>
+#include <AudioManager.h>
 #include <Renderer.h>
 #include <ObjLoader.h>
 #include <Windows.h>
@@ -14,19 +14,19 @@
 
 
 
-
 int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE, LPSTR, int) {
-
-	if (SDL_Init(SDL_INIT_AUDIO) != 0) {
-		std::cerr << "SDL_Init Error: " << SDL_GetError() << std::endl;
-		return 1;
-	}
-	std::cout << "SDL audio initialized successfully!\n";
 
 	Window window(hInstance, 1200, 900, "3D Sphere + Camera");
 	Input input;
 	Camera camera;
 	Renderer renderer;
+	AudioManager audioManager;
+
+	if (!audioManager.init()) {
+		MessageBoxA(nullptr, "Failed to initialize audio", "Error", MB_OK | MB_ICONERROR);
+		return -1;
+	}	
+	audioManager.loadSound("pause", "C:/Users/joshDope/Documents/cppCode/OpenGL/Assets/sound.wav");
 
 	bool isPaused = false;
 
@@ -39,6 +39,7 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE, LPSTR, int) {
 
 		if (input.keyPressed('P')) {
 			isPaused = !isPaused;
+			audioManager.playSound("pause");
 		}
 
 
@@ -84,7 +85,8 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE, LPSTR, int) {
 
 	}
 
-	SDL_Quit();
+	audioManager.cleanUp();
+
 	return 0;
 }
 
