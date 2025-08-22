@@ -3,7 +3,7 @@
 #include <cmath>
 #include <gl/GLU.h>
 
-void Camera::update(const Input& input) {
+void Camera::update(const Input& input, float speed) {
     // Mouse-based look
     float sensitivity = 0.15f;
     yaw   += input.getMouseDeltaX() * sensitivity;
@@ -22,7 +22,7 @@ void Camera::update(const Input& input) {
     float len = sqrt(dirX * dirX + dirY * dirY + dirZ * dirZ);
     dirX /= len; dirY /= len; dirZ /= len;
 
-    float speed = 0.05f;
+    float charSpeed = speed;
     if (input.keyDown('W')) {
         camX += dirX * speed;
         camY += dirY * speed;
@@ -34,17 +34,22 @@ void Camera::update(const Input& input) {
         camZ -= dirZ * speed;
     }
     if (input.keyDown('A')) {
-        camX += cos(radYaw) * speed;
-        camZ += sin(radYaw) * speed;
-    }
-    if (input.keyDown('D')) {
         camX -= cos(radYaw) * speed;
         camZ -= sin(radYaw) * speed;
+    }
+    if (input.keyDown('D')) {
+        camX += cos(radYaw) * speed;
+        camZ += sin(radYaw) * speed;
     }
 
     // Collision
     if (camY >= floorY) {
-        camY -= 0.5f;
+        camY -= 0.1f;
+    }
+
+    // Collision
+    if (camY <= floorY) {
+        camY += 0.1f;
     }
 }
 

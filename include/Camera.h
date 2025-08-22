@@ -12,7 +12,7 @@ class Camera {
 
 
 
-		void update(const class Input& input);
+		void update(const class Input& input, float speed);
 		void applyView() const;
 
 	private:

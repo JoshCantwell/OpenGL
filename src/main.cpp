@@ -1,14 +1,14 @@
 #include <Window.h>
 #include <Input.h>
 #include <Camera.h>
+#include <MenuUI.h>
 #include <AudioManager.h>
 #include <Renderer.h>
 #include <ObjLoader.h>
 #include <Windows.h>
 #include <gl/GL.h>
-#include <cmath>
 #include <assimp/Importer.hpp>
-#include <imgui.h>
+#include <MenuUI.h>
 #include <backends/imgui_impl_win32.h>
 #include <backends/imgui_impl_opengl3.h>
 
@@ -21,6 +21,7 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE, LPSTR, int) {
 	Camera camera;
 	Renderer renderer;
 	AudioManager audioManager;
+	MenuUI menu;
 
 	if (!audioManager.init()) {
 		MessageBoxA(nullptr, "Failed to initialize audio", "Error", MB_OK | MB_ICONERROR);
@@ -33,6 +34,7 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE, LPSTR, int) {
 	ShowCursor(FALSE);
 
 	float angle = 0.0f;
+	float speed = 0.05f;
 
 
 	while (window.processMessages()) {
@@ -47,18 +49,19 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE, LPSTR, int) {
 			ImGui_ImplOpenGL3_NewFrame();
 			ImGui_ImplWin32_NewFrame();
 			ImGui::NewFrame();
-			ImGui::Begin("Hello, ImGui!");
-			ImGui::Text("This is an ImGui window!");
+			menu.PauseMenu(speed);		
 			ImGui::End();
+
 
 		}
 
 		input.update(window.getHWND(), isPaused); // pass HWND
 		if (isPaused) {
 			ShowCursor(TRUE);
+			camera.update(input, 0);
 		} else {
 			ShowCursor(FALSE);
-			camera.update(input);  // Only update camera when not paused
+			camera.update(input, speed);  // Only update camera when not paused
 		}	
 		renderer.draw(angle, camera);
 
