@@ -4,6 +4,7 @@
 #include <gl/GL.h>
 #include <gl/GLU.h>
 #include <ObjLoader.h>
+#include <MenuUI.h>
 
 Renderer::Renderer() {
 	glEnable(GL_DEPTH_TEST);
@@ -30,8 +31,9 @@ Renderer::~Renderer() {
 	gluDeleteQuadric(quad);
 }
 
-void Renderer::draw(float angle, const Camera& camera) {
-	glClearColor(0.05f, 0.05f, 0.1f, 1.0f);
+void Renderer::draw(float angle, const Camera& camera, const glm::vec3& sphereColor ) {
+	
+	glClearColor(0.02f, 0.4f, 0.7f, 1.0f);
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
 	glLoadIdentity();
@@ -39,13 +41,14 @@ void Renderer::draw(float angle, const Camera& camera) {
 
 	//glRotatef(angle, 0.0f, 1.0f, 0.0f);
 
-	GLfloat mat_diffuse[] = { 0.0f, 1.6f, 0.0f, 1.0f };
-	glMaterialfv(GL_FRONT, GL_DIFFUSE, mat_diffuse);
+	// Set material color to the current sphereColor
+	GLfloat mat_diffuse[] = { sphereColor.r, sphereColor.g, sphereColor.b, 1.0f };
+	glMaterialfv(GL_FRONT, GL_DIFFUSE, mat_diffuse);	
 
 	ObjLoader obj;
 
-    
-	
+
+
 	// --- Draw checkerboard floor ---
 	glPushMatrix();
 	glDisable(GL_LIGHTING); // Optional: flat colors look better for checkerboard
@@ -72,6 +75,7 @@ void Renderer::draw(float angle, const Camera& camera) {
 
 	glEnable(GL_LIGHTING);
 	glPopMatrix();
+
 
 
 	gluSphere(quad, 1.0, 48, 48);

@@ -36,6 +36,8 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE, LPSTR, int) {
 	float angle = 0.0f;
 	float speed = 0.05f;
 
+	glm::vec3 sphereColor = glm::vec3(1.0f, 0.0f, 0.0f);
+
 
 	while (window.processMessages()) {
 
@@ -49,10 +51,11 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE, LPSTR, int) {
 			ImGui_ImplOpenGL3_NewFrame();
 			ImGui_ImplWin32_NewFrame();
 			ImGui::NewFrame();
+
 			menu.PauseMenu(speed);		
-			ImGui::End();
+			menu.OtherMenu();
 
-
+			menu.SphereColorMenu(&sphereColor);
 		}
 
 		input.update(window.getHWND(), isPaused); // pass HWND
@@ -63,7 +66,7 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE, LPSTR, int) {
 			ShowCursor(FALSE);
 			camera.update(input, speed);  // Only update camera when not paused
 		}	
-		renderer.draw(angle, camera);
+		renderer.draw(angle, camera, sphereColor);
 
 
 		if (isPaused){
@@ -78,7 +81,7 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE, LPSTR, int) {
 
 		//angle = fmod(angle + 0.5f, 360.0f);
 
-		if (input.keyDown(VK_ESCAPE)) {
+	if (input.keyDown(VK_ESCAPE)) {
 			break;  // break out of your game loop
 		}
 
