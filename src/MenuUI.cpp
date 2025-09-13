@@ -11,6 +11,33 @@ MenuUI::~MenuUI(){
 
 }
 
+void MenuUI::ShowDockedPanel() {
+	ImVec2 displaySize = ImGui::GetIO().DisplaySize;
+
+	float leftPanelWidth = 250.0f;
+	float rightPanelWidth = 300.0f;
+
+	ImGuiWindowFlags panelFlags = ImGuiWindowFlags_NoMove |
+		//ImGuiWindowFlags_NoResize |
+		ImGuiWindowFlags_NoCollapse |
+		ImGuiWindowFlags_NoTitleBar;
+
+	// ---- LEFT PANEL ----
+	ImGui::SetNextWindowPos(ImVec2(0, 0));
+	//ImGui::SetNextWindowSize(ImVec2(leftPanelWidth, displaySize.y));
+	ImGui::Begin("Left Panel", nullptr, panelFlags);
+	ImGui::Text("Left sidebar content");
+	ImGui::End();
+
+	// ---- RIGHT PANEL ----
+	ImGui::SetNextWindowPos(ImVec2(displaySize.x - rightPanelWidth, 0));
+	//ImGui::SetNextWindowSize(ImVec2(rightPanelWidth, displaySize.y));
+	ImGui::Begin("Right Panel", nullptr, panelFlags);
+	ImGui::Text("Right sidebar content");
+	ImGui::End(); 
+}
+
+
 void MenuUI::PauseMenu(float &speed) {
 
 

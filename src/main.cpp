@@ -23,6 +23,7 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE, LPSTR, int) {
 	AudioManager audioManager;
 	MenuUI menu;
 
+
 	if (!audioManager.init()) {
 		MessageBoxA(nullptr, "Failed to initialize audio", "Error", MB_OK | MB_ICONERROR);
 		return -1;
@@ -33,12 +34,14 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE, LPSTR, int) {
 
 	ShowCursor(FALSE);
 
+	Mix_VolumeMusic(MIX_MAX_VOLUME / 3);	
 	float angle = 0.0f;
 	float speed = 0.05f;
 
 	glm::vec3 sphereColor = glm::vec3(1.0f, 0.0f, 0.0f);
 
 
+	audioManager.setVolume(MIX_MAX_VOLUME / 100);
 	while (window.processMessages()) {
 
 		if (input.keyPressed('P')) {
@@ -55,6 +58,7 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE, LPSTR, int) {
 			menu.PauseMenu(speed);		
 			menu.OtherMenu();
 
+			menu.ShowDockedPanel();
 			menu.SphereColorMenu(&sphereColor);
 		}
 
@@ -81,7 +85,7 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE, LPSTR, int) {
 
 		//angle = fmod(angle + 0.5f, 360.0f);
 
-	if (input.keyDown(VK_ESCAPE)) {
+		if (input.keyDown(VK_ESCAPE)) {
 			break;  // break out of your game loop
 		}
 

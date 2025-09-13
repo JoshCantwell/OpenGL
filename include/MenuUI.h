@@ -3,6 +3,7 @@
 
 #include <imgui.h>
 #include <glm.hpp>
+#include <string>
 
 class MenuUI{
 
@@ -15,6 +16,7 @@ public:
 
 
 
+	void ShowDockedPanel();
 	void PauseMenu(float &speed);
 	void OtherMenu();
 	void SphereColorMenu(glm::vec3* sphereColor);

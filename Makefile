@@ -10,7 +10,6 @@ SDL2_MIXER_LIB = $(SDL2_MIXER_DIR)/lib
 # ImGui paths
 IMGUI_DIR = C:/Libraries/imgui
 IMGUI_BACKENDS = $(IMGUI_DIR)/backends
-
 IMGUI_SRCS = \
     $(IMGUI_DIR)/imgui.cpp \
     $(IMGUI_DIR)/imgui_draw.cpp \
@@ -19,15 +18,6 @@ IMGUI_SRCS = \
     $(IMGUI_DIR)/imgui_demo.cpp \
     $(IMGUI_BACKENDS)/imgui_impl_win32.cpp \
     $(IMGUI_BACKENDS)/imgui_impl_opengl3.cpp
-
-#Compiler
-CC  = gcc
-CXX = g++
-
-# Paths
-SRC_DIR  = src
-OBJ_DIR  = build
-BIN      = $(OBJ_DIR)/app.exe
 
 
 # GLAD paths
@@ -40,6 +30,16 @@ GLM_INC = C:/Libraries/glm
 # GLFW paths
 GLFW_INC = C:/Libraries/glfw-3.4/include 
 GLFW_LIB = C:/Libraries/glfw-3.4/lib
+
+
+#Compiler
+CC  = gcc
+CXX = g++
+
+# Paths
+SRC_DIR  = src
+OBJ_DIR  = build
+BIN      = $(OBJ_DIR)/app.exe
 
 # Include paths
 INCLUDES = -Iinclude -I$(GLAD_INC) -I$(GLFW_INC) -I$(IMGUI_DIR) -I$(IMGUI_BACKENDS) -I$(SDL2_INC) -I$(SDL2_MIXER_INC)
