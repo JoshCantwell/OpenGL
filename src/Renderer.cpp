@@ -32,10 +32,10 @@ Renderer::~Renderer() {
 }
 
 void Renderer::draw(float angle, const Camera& camera, const glm::vec3& sphereColor ) {
-	
 	glClearColor(0.02f, 0.4f, 0.7f, 1.0f);
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
+	glMatrixMode(GL_MODELVIEW);
 	glLoadIdentity();
 	camera.applyView();
 
@@ -47,7 +47,9 @@ void Renderer::draw(float angle, const Camera& camera, const glm::vec3& sphereCo
 
 	ObjLoader obj;
 
+	
 
+	//camera.applyView();
 
 	// --- Draw checkerboard floor ---
 	glPushMatrix();
@@ -78,15 +80,27 @@ void Renderer::draw(float angle, const Camera& camera, const glm::vec3& sphereCo
 
 
 
+
+
+
+
 	glPushMatrix();
+	//glTranslatef(playerZ, 0, 0);
 	gluSphere(quad, 1.0, 48, 48);
 	glPopMatrix();
 
-
 	// Second sphere
 	glPushMatrix();
-	glTranslatef(3.0f, 0.0f, -5.0f); // move sphere 3 units right, 5 units back
-	//gluSphere(quad, 1.0f, 48, 48);
+	glTranslatef(playerX, 0.0f, 5.0f); // move sphere 3 units right, 5 units back
+	gluSphere(quad, 1.0f, 48, 48);
 	glPopMatrix();
+
+
+
+	//this->playerZ += .1;
+	//this->playerX += .1;
+
+
+	glFlush();
 }
 
