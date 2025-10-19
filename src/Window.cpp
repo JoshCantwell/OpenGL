@@ -19,39 +19,62 @@ Window::Window(HINSTANCE hInstance, int width, int height, const char *title) {
   wc.lpszClassName = CLASS_NAME;
   RegisterClass(&wc);
 
+
+  /*  FULL SCREEN IMPLEMENTATION
+  // Get primary monitor resolution
+  int screenWidth = GetSystemMetrics(SM_CXSCREEN);
+  int screenHeight = GetSystemMetrics(SM_CYSCREEN);
+
+  
+  hwnd = CreateWindowEx(
+		  0,
+		  CLASS_NAME,
+		  title,
+		  WS_POPUP,               // <-- Fullscreen window style
+		  0, 0,                   // Start at top-left of monitor
+		  screenWidth, screenHeight,
+		  NULL,
+		  NULL,
+		  hInstance,
+		  NULL
+		  ); 
+
+  */
+
+
   hwnd =
-      CreateWindowEx(0, CLASS_NAME, title, WS_OVERLAPPEDWINDOW, CW_USEDEFAULT,
-                     CW_USEDEFAULT, width, height, NULL, NULL, hInstance, NULL);
+	  CreateWindowEx(0, CLASS_NAME, title, WS_OVERLAPPEDWINDOW, CW_USEDEFAULT,
+			  CW_USEDEFAULT, width, height, NULL, NULL, hInstance, NULL);
 
   hdc = GetDC(hwnd);
 
   PIXELFORMATDESCRIPTOR pfd = {
-      sizeof(PIXELFORMATDESCRIPTOR),                              // nSize
-      1,                                                          // nVersion
-      PFD_DRAW_TO_WINDOW | PFD_SUPPORT_OPENGL | PFD_DOUBLEBUFFER, // dwFlags
-      PFD_TYPE_RGBA,                                              // iPixelType
-      32,                                                         // cColorBits
-      0,
-      0,
-      0,
-      0, // cRedBits, cRedShift, cGreenBits, cGreenShift
-      0,
-      0,
-      0,
-      0, // cBlueBits, cBlueShift, cAlphaBits, cAlphaShift
-      0, // cAccumBits
-      0,
-      0,
-      0,
-      0,              // cAccumRedBits, Green, Blue, Alpha
-      24,             // cDepthBits
-      8,              // cStencilBits
-      0,              // cAuxBuffers
-      PFD_MAIN_PLANE, // iLayerType
-      0,              // bReserved
-      0,              // dwLayerMask
-      0,              // dwVisibleMask
-      0               // dwDamageMask
+	  sizeof(PIXELFORMATDESCRIPTOR),                              // nSize
+	  1,                                                          // nVersion
+	  PFD_DRAW_TO_WINDOW | PFD_SUPPORT_OPENGL | PFD_DOUBLEBUFFER, // dwFlags
+	  PFD_TYPE_RGBA,                                              // iPixelType
+	  32,                                                         // cColorBits
+	  0,
+	  0,
+	  0,
+	  0, // cRedBits, cRedShift, cGreenBits, cGreenShift
+	  0,
+	  0,
+	  0,
+	  0, // cBlueBits, cBlueShift, cAlphaBits, cAlphaShift
+	  0, // cAccumBits
+	  0,
+	  0,
+	  0,
+	  0,              // cAccumRedBits, Green, Blue, Alpha
+	  24,             // cDepthBits
+	  8,              // cStencilBits
+	  0,              // cAuxBuffers
+	  PFD_MAIN_PLANE, // iLayerType
+	  0,              // bReserved
+	  0,              // dwLayerMask
+	  0,              // dwVisibleMask
+	  0               // dwDamageMask
   };
 
   pfd.dwFlags = PFD_DRAW_TO_WINDOW | PFD_SUPPORT_OPENGL | PFD_DOUBLEBUFFER;
@@ -80,37 +103,37 @@ Window::Window(HINSTANCE hInstance, int width, int height, const char *title) {
 }
 
 Window::~Window() {
-  wglMakeCurrent(NULL, NULL);
-  wglDeleteContext(hglrc);
-  ReleaseDC(hwnd, hdc);
+	wglMakeCurrent(NULL, NULL);
+	wglDeleteContext(hglrc);
+	ReleaseDC(hwnd, hdc);
 }
 
 bool Window::processMessages() {
-  MSG msg = {};
-  while (PeekMessage(&msg, NULL, 0, 0, PM_REMOVE)) {
-    if (msg.message == WM_QUIT)
-      return false;
-    TranslateMessage(&msg);
-    DispatchMessage(&msg);
-  }
-  return true;
+	MSG msg = {};
+	while (PeekMessage(&msg, NULL, 0, 0, PM_REMOVE)) {
+		if (msg.message == WM_QUIT)
+			return false;
+		TranslateMessage(&msg);
+		DispatchMessage(&msg);
+	}
+	return true;
 }
 
 LRESULT CALLBACK Window::WindowProc(HWND hwnd, UINT uMsg, WPARAM wParam,
-                                    LPARAM lParam) {
+		LPARAM lParam) {
 
-  // Let ImGui handle the message first
-  if (ImGui_ImplWin32_WndProcHandler(hwnd, uMsg, wParam, lParam))
-    return true;
+	// Let ImGui handle the message first
+	if (ImGui_ImplWin32_WndProcHandler(hwnd, uMsg, wParam, lParam))
+		return true;
 
-  // Your normal Windows message handling
-  switch (uMsg) {
-  case WM_DESTROY:
-    PostQuitMessage(0);
-    return 0;
-    // Handle other messages like WM_SIZE if needed
+	// Your normal Windows message handling
+	switch (uMsg) {
+		case WM_DESTROY:
+			PostQuitMessage(0);
+			return 0;
+			// Handle other messages like WM_SIZE if needed
 
-  default:
-    return DefWindowProc(hwnd, uMsg, wParam, lParam);
-  }
+		default:
+			return DefWindowProc(hwnd, uMsg, wParam, lParam);
+	}
 }

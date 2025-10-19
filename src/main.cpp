@@ -23,6 +23,8 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE, LPSTR, int) {
 	AudioManager audioManager;
 	MenuUI menu;
 
+	
+
 
 	if (!audioManager.init()) {
 		MessageBoxA(nullptr, "Failed to initialize audio", "Error", MB_OK | MB_ICONERROR);
@@ -55,11 +57,19 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE, LPSTR, int) {
 			ImGui_ImplWin32_NewFrame();
 			ImGui::NewFrame();
 
+			
+
+
 			menu.PauseMenu(speed);		
 			menu.OtherMenu();
 
-			menu.ShowDockedPanel();
 			menu.SphereColorMenu(&sphereColor);
+		} else {
+			ImGui_ImplOpenGL3_NewFrame();
+			ImGui_ImplWin32_NewFrame();
+			ImGui::NewFrame();
+			menu.ShowDockedPanel(camera);
+
 		}
 
 		input.update(window.getHWND(), isPaused); // pass HWND
@@ -67,23 +77,24 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE, LPSTR, int) {
 			ShowCursor(TRUE);
 			camera.update(input, 0);
 		} else {
+
 			ShowCursor(FALSE);
+			bool showMyWindow = true; // Controls window visibility
 			camera.update(input, speed);  // Only update camera when not paused
 		}	
 		renderer.draw(angle, camera, sphereColor);
 
 
-		if (isPaused){
-			ImGui::Render();
-			ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
-		}
+		//if (isPaused){
+		ImGui::Render();
+		ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
+		//}
 
 
 
 
 		SwapBuffers(window.getHDC());
 
-		//angle = fmod(angle + 0.5f, 360.0f);
 
 		if (input.keyDown(VK_ESCAPE)) {
 			break;  // break out of your game loop
@@ -99,4 +110,7 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE, LPSTR, int) {
 
 	return 0;
 }
+
+
+
 

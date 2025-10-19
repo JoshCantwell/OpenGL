@@ -11,11 +11,15 @@ MenuUI::~MenuUI(){
 
 }
 
-void MenuUI::ShowDockedPanel() {
+void MenuUI::ShowDockedPanel(Camera camera) {
 	ImVec2 displaySize = ImGui::GetIO().DisplaySize;
 
-	float leftPanelWidth = 250.0f;
-	float rightPanelWidth = 300.0f;
+	float cameraPositionX = camera.camX;
+	float cameraPositionY = camera.camY;
+	float cameraPositionZ = camera.camZ;
+
+	float leftPanelWidth = 200.0f;
+	float rightPanelWidth = 200.0f;
 
 	ImGuiWindowFlags panelFlags = ImGuiWindowFlags_NoMove |
 		//ImGuiWindowFlags_NoResize |
@@ -24,14 +28,16 @@ void MenuUI::ShowDockedPanel() {
 
 	// ---- LEFT PANEL ----
 	ImGui::SetNextWindowPos(ImVec2(0, 0));
-	//ImGui::SetNextWindowSize(ImVec2(leftPanelWidth, displaySize.y));
+	ImGui::SetNextWindowSize(ImVec2(leftPanelWidth, displaySize.y));
 	ImGui::Begin("Left Panel", nullptr, panelFlags);
-	ImGui::Text("Left sidebar content");
+	ImGui::Text("Camera X Position: %f", cameraPositionX);
+	ImGui::Text("Camera Y Position: %f", cameraPositionY);
+	ImGui::Text("Camera Z Position: %f", cameraPositionZ);
 	ImGui::End();
 
 	// ---- RIGHT PANEL ----
 	ImGui::SetNextWindowPos(ImVec2(displaySize.x - rightPanelWidth, 0));
-	//ImGui::SetNextWindowSize(ImVec2(rightPanelWidth, displaySize.y));
+	ImGui::SetNextWindowSize(ImVec2(rightPanelWidth, displaySize.y));
 	ImGui::Begin("Right Panel", nullptr, panelFlags);
 	ImGui::Text("Right sidebar content");
 	ImGui::End(); 

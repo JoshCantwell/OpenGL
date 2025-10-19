@@ -61,7 +61,7 @@ void Renderer::draw(float angle, const Camera& camera, const glm::vec3& sphereCo
 		for (int z = -size / 2; z < size / 2; ++z) {
 			// Alternate colors
 			bool isWhite = (x + z) % 2 == 0;
-			glColor3f(isWhite ? 1.0f : 0.0f, isWhite ? 1.0f : 0.0f, isWhite ? 1.0f : 0.0f);
+			glColor3f(isWhite ? 0.65f : 0.0f, isWhite ? 1.0f : 0.0f, isWhite ? 1.0f : 0.0f);
 
 			// Draw quad
 			glBegin(GL_QUADS);
@@ -78,6 +78,15 @@ void Renderer::draw(float angle, const Camera& camera, const glm::vec3& sphereCo
 
 
 
+	glPushMatrix();
 	gluSphere(quad, 1.0, 48, 48);
+	glPopMatrix();
+
+
+	// Second sphere
+	glPushMatrix();
+	glTranslatef(3.0f, 0.0f, -5.0f); // move sphere 3 units right, 5 units back
+	//gluSphere(quad, 1.0f, 48, 48);
+	glPopMatrix();
 }
 

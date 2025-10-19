@@ -4,6 +4,7 @@
 #include <imgui.h>
 #include <glm.hpp>
 #include <string>
+#include <Camera.h>
 
 class MenuUI{
 
@@ -16,7 +17,7 @@ public:
 
 
 
-	void ShowDockedPanel();
+	void ShowDockedPanel(Camera camera);
 	void PauseMenu(float &speed);
 	void OtherMenu();
 	void SphereColorMenu(glm::vec3* sphereColor);
