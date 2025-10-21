@@ -32,6 +32,8 @@ Renderer::~Renderer() {
 }
 
 void Renderer::draw(float angle, const Camera& camera, const glm::vec3& sphereColor ) {
+
+
 	glClearColor(0.02f, 0.4f, 0.7f, 1.0f);
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
@@ -86,21 +88,25 @@ void Renderer::draw(float angle, const Camera& camera, const glm::vec3& sphereCo
 
 	glPushMatrix();
 	//glTranslatef(playerZ, 0, 0);
-	gluSphere(quad, 1.0, 48, 48);
+		gluSphere(quad, 1.0, 48, 48);
 	glPopMatrix();
 
 	// Second sphere
 	glPushMatrix();
-	glTranslatef(playerX, 0.0f, 5.0f); // move sphere 3 units right, 5 units back
-	gluSphere(quad, 1.0f, 48, 48);
+		glTranslatef(i, 0, 0); // move sphere 3 units right, 5 units back
+		gluSphere(quad, 1.0f, 48, 48);
 	glPopMatrix();
 
 
 
 	//this->playerZ += .1;
-	//this->playerX += .1;
-
+	
 
 	glFlush();
 }
 
+void Renderer::updateMovement(){
+
+	this->i += .1;
+	this->playerY += .1;
+}

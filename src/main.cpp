@@ -46,6 +46,7 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE, LPSTR, int) {
 	audioManager.setVolume(MIX_MAX_VOLUME / 100);
 	while (window.processMessages()) {
 
+		renderer.updateMovement();
 		if (input.keyPressed('P')) {
 			isPaused = !isPaused;
 			audioManager.playSound("pause");

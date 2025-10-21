@@ -7,11 +7,13 @@ class Renderer {
 		Renderer();
 		~Renderer();
 
+		void updateMovement();
+
 		void draw(float angle, const class Camera& camera, const glm::vec3& sphereColor );
 	private:
 		struct GLUquadric* quad;
 
-		float playerX = 3;
+		float i = 3;
 		float playerY = 0;
 		float playerZ = -5;
 
