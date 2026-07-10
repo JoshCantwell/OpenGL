@@ -6,31 +6,30 @@
 #include <Renderer.h>
 #include <ObjLoader.h>
 #include <Windows.h>
-#include <gl/GL.h>
 #include <assimp/Importer.hpp>
 #include <MenuUI.h>
 #include <backends/imgui_impl_win32.h>
 #include <backends/imgui_impl_opengl3.h>
-
-
+#include <Model.h>
+#include <winuser.h>
+#include <Shader.h>
 
 int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE, LPSTR, int) {
 
-	Window window(hInstance, 1200, 900, "3D Sphere + Camera");
+	Window window(hInstance, 1920, 1080, "3D Sphere + Camera");
 	Input input;
 	Camera camera;
 	Renderer renderer;
 	AudioManager audioManager;
 	MenuUI menu;
 
-	
 
 
 	if (!audioManager.init()) {
 		MessageBoxA(nullptr, "Failed to initialize audio", "Error", MB_OK | MB_ICONERROR);
 		return -1;
 	}	
-	audioManager.loadSound("pause", "C:/Users/joshDope/Documents/cppCode/OpenGL/Assets/sound.wav");
+	audioManager.loadSound("pause", "C:/Users/joshDope/Documents/cppCode/OpenGL/Assets/mysticalfantasyloop.wav");
 
 	bool isPaused = false;
 
@@ -39,17 +38,39 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE, LPSTR, int) {
 	Mix_VolumeMusic(MIX_MAX_VOLUME / 3);	
 	float angle = 0.0f;
 	float speed = 0.05f;
+	float size = 0.0f;
 
 	glm::vec3 sphereColor = glm::vec3(1.0f, 0.0f, 0.0f);
 
 
 	audioManager.setVolume(MIX_MAX_VOLUME / 100);
+
+
+	Model testModel("C:/Users/joshDope/Documents/cppCode/OpenGL/Assets/PlanetaryGear.obj");
+	Model testModel2("C:/Users/joshDope/Documents/cppCode/OpenGL/Assets/Cube.obj");
+
+
+	RenderObject cube;
+	cube.model = &testModel2;
+	cube.position = {2.0f, 2.0f, 0.0f};
+	cube.rotation = {0.0f, 45.0f, 0.0f};
+	cube.scale = {0.4f, 0.4f, 0.4f};
+
+	RenderObject gear;
+	gear.model = &testModel;
+	gear.position = {0.0f, 1.0f, 0.0f};
+	gear.rotation = {0.0f, 45.0f, 0.0f};
+	gear.scale = {0.05f, 0.05f, 0.05f};
+
+
+
 	while (window.processMessages()) {
 
 		renderer.updateMovement();
 		if (input.keyPressed('P')) {
 			isPaused = !isPaused;
 			audioManager.playSound("pause");
+			ShowCursor(TRUE);
 		}
 
 
@@ -58,10 +79,10 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE, LPSTR, int) {
 			ImGui_ImplWin32_NewFrame();
 			ImGui::NewFrame();
 
-			
 
 
-			menu.PauseMenu(speed);		
+
+			menu.PauseMenu(speed, size);		
 			menu.OtherMenu();
 
 			menu.SphereColorMenu(&sphereColor);
@@ -84,6 +105,8 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE, LPSTR, int) {
 			camera.update(input, speed);  // Only update camera when not paused
 		}	
 		renderer.draw(angle, camera, sphereColor);
+		renderer.drawObject(gear, camera);
+		renderer.drawObject(cube, camera);
 
 
 		//if (isPaused){

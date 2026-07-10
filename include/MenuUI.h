@@ -18,7 +18,7 @@ public:
 
 
 	void ShowDockedPanel(Camera camera);
-	void PauseMenu(float &speed);
+	void PauseMenu(float &speed, float &size);
 	void OtherMenu();
 	void SphereColorMenu(glm::vec3* sphereColor);
 

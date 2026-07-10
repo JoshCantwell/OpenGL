@@ -31,6 +31,10 @@ GLM_INC = C:/Libraries/glm
 GLFW_INC = C:/Libraries/glfw-3.4/include 
 GLFW_LIB = C:/Libraries/glfw-3.4/lib
 
+# Assimp paths
+ASSIMP_INC = C:/Libraries/assimp/include
+ASSIMP_LIB = C:/Libraries/assimp/lib
+
 
 #Compiler
 CC  = gcc
@@ -42,14 +46,15 @@ OBJ_DIR  = build
 BIN      = $(OBJ_DIR)/app.exe
 
 # Include paths
-INCLUDES = -Iinclude -I$(GLAD_INC) -I$(GLFW_INC) -I$(IMGUI_DIR) -I$(IMGUI_BACKENDS) -I$(SDL2_INC) -I$(SDL2_MIXER_INC)
+INCLUDES = -Iinclude -I$(GLAD_INC) -I$(GLFW_INC) -I$(IMGUI_DIR) -I$(IMGUI_BACKENDS) -I$(SDL2_INC) -I$(SDL2_MIXER_INC) -I$(ASSIMP_INC)
 
 # Compiler flags
 CXXFLAGS = -Wall -Wextra -std=c++17 $(INCLUDES) -I$(GLM_INC)
 CFLAGS   = -Wall $(INCLUDES)
 
 # Libraries
-LIBS = -L$(GLFW_LIB) -lglfw3 -lopengl32 -lglu32 -lgdi32 -ldwmapi -L$(SDL2_LIB) -L$(SDL2_MIXER_LIB) -lSDL2main -lSDL2 -lSDL2_mixer -mwindows
+LIBS = -L$(GLFW_LIB) -lglfw3 -lopengl32 -lglu32 -lgdi32 -ldwmapi -L$(SDL2_LIB) -L$(SDL2_MIXER_LIB) -L$(ASSIMP_LIB) -lSDL2main -lSDL2 -lSDL2_mixer -lassimp -lz -mwindows
+
 
 # Sources
 CPP_SRCS = $(wildcard $(SRC_DIR)/*.cpp)

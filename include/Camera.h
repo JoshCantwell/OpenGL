@@ -11,6 +11,9 @@ class Camera {
 		float floorY = -1.0f;       // floor height
 
 
+		float getDirX() const { return dirX; }
+		float getDirY() const { return dirY; }
+		float getDirZ() const { return dirZ; }
 
 		void update(const class Input& input, float speed);
 		void applyView() const;

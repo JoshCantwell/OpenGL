@@ -29,7 +29,7 @@ void Camera::update(const Input& input, float speed) {
 	float charSpeed = speed;
 
 	if (input.keyDown('X')) {
-		camY += speed; 
+		camY -= speed; 
 		if (!altHeld) {
 
 			altHeld = true;
