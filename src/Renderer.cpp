@@ -101,7 +101,7 @@ void Renderer::drawObject(const RenderObject& object, const Camera& camera) {
 	modelShader.setMat4("view", view);
 	modelShader.setMat4("projection", projection);
 
-	object.model->Draw();
+	object.model->Draw(modelShader);
 	glUseProgram(0);
 
 }

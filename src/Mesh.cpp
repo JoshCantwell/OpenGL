@@ -5,6 +5,7 @@
 Mesh::Mesh(Mesh&& other) noexcept
 : vertices(std::move(other.vertices)),
 	indices(std::move(other.indices)),
+	textures(std::move(other.textures)),
 	VAO(other.VAO),
 	VBO(other.VBO),
 	EBO(other.EBO)
@@ -16,38 +17,50 @@ Mesh::Mesh(Mesh&& other) noexcept
 
 Mesh& Mesh::operator=(Mesh&& other) noexcept
 {
-	if (this != &other)
-	{
-		glDeleteVertexArrays(1, &VAO);
-		glDeleteBuffers(1, &VBO);
-		glDeleteBuffers(1, &EBO);
+    if (this != &other)
+    {
+        if (VAO != 0)
+            glDeleteVertexArrays(1, &VAO);
 
-		vertices = std::move(other.vertices);
-		indices = std::move(other.indices);
+        if (VBO != 0)
+            glDeleteBuffers(1, &VBO);
 
-		VAO = other.VAO;
-		VBO = other.VBO;
-		EBO = other.EBO;
+        if (EBO != 0)
+            glDeleteBuffers(1, &EBO);
 
-		other.VAO = 0;
-		other.VBO = 0;
-		other.EBO = 0;
-	}
+        vertices = std::move(other.vertices);
+        indices = std::move(other.indices);
+        textures = std::move(other.textures);
 
-	return *this;
+        VAO = other.VAO;
+        VBO = other.VBO;
+        EBO = other.EBO;
+
+        other.VAO = 0;
+        other.VBO = 0;
+        other.EBO = 0;
+    }
+
+    return *this;
 }
 
 
-Mesh::Mesh(const std::vector<Vertex>& vertices, const std::vector<unsigned int>& indices)
-	: vertices(vertices), indices(indices)
+Mesh::Mesh(const std::vector<Vertex>& vertices, const std::vector<unsigned int>& indices ,const std::vector<MeshTexture>& textures)
+	: vertices(vertices), indices(indices), textures(textures)
 {
 	setupMesh();
 }
 
-Mesh::~Mesh() {
-	glDeleteVertexArrays(1, &VAO);
-	glDeleteBuffers(1, &VBO);
-	glDeleteBuffers(1, &EBO);
+Mesh::~Mesh()
+{
+	if (VAO != 0)
+		glDeleteVertexArrays(1, &VAO);
+
+	if (VBO != 0)
+		glDeleteBuffers(1, &VBO);
+
+	if (EBO != 0)
+		glDeleteBuffers(1, &EBO);
 }
 
 void Mesh::setupMesh() {
@@ -78,10 +91,63 @@ void Mesh::setupMesh() {
 	glBindVertexArray(0);
 }
 
-void Mesh::Draw() const
+void Mesh::Draw(const Shader& shader) const
 {
-	glBindVertexArray(VAO);
-	glDrawElements(GL_TRIANGLES, static_cast<GLsizei>(indices.size()), GL_UNSIGNED_INT, 0);
-	glBindVertexArray(0);
-}
+	bool hasDiffuseTexture = false;
+	unsigned int diffuseNumber = 1;
 
+	for (unsigned int i = 0; i < textures.size(); ++i)
+	{
+		if (textures[i].type != "texture_diffuse")
+			continue;
+
+		hasDiffuseTexture = true;
+
+		glActiveTexture(GL_TEXTURE0 + i);
+
+		std::string uniformName =
+			"texture_diffuse" +
+			std::to_string(diffuseNumber);
+
+		shader.setInt(
+				uniformName,
+				static_cast<int>(i)
+			     );
+
+		glBindTexture(
+				GL_TEXTURE_2D,
+				textures[i].id
+			     );
+
+		++diffuseNumber;
+	}
+
+	shader.setBool(
+			"hasDiffuseTexture",
+			hasDiffuseTexture
+		      );
+
+	shader.setVec3(
+			"fallbackColor",
+			glm::vec3(0.8f, 0.4f, 0.1f)
+		      );
+
+	glBindVertexArray(VAO);
+
+	glDrawElements(
+			GL_TRIANGLES,
+			static_cast<GLsizei>(indices.size()),
+			GL_UNSIGNED_INT,
+			nullptr
+		      );
+
+	glBindVertexArray(0);
+
+	for (unsigned int i = 0; i < textures.size(); ++i)
+	{
+		glActiveTexture(GL_TEXTURE0 + i);
+		glBindTexture(GL_TEXTURE_2D, 0);
+	}
+
+	glActiveTexture(GL_TEXTURE0);
+}

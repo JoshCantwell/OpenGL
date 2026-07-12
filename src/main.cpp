@@ -47,14 +47,29 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE, LPSTR, int) {
 
 
 	Model testModel("C:/Users/joshDope/Documents/cppCode/OpenGL/Assets/PlanetaryGear.obj");
-	Model testModel2("C:/Users/joshDope/Documents/cppCode/OpenGL/Assets/Cube.obj");
 
+	MessageBoxA(
+			nullptr,
+			"Gear model constructed",
+			"Main Debug",
+			MB_OK
+		   );
+
+	Model testModel2("C:/Users/joshDope/Documents/cppCode/OpenGL/Assets/BrickCylinder.obj");
+
+
+	MessageBoxA(
+			nullptr,
+			"Cube model constructed",
+			"Main Debug",
+			MB_OK
+		   );
 
 	RenderObject cube;
 	cube.model = &testModel2;
-	cube.position = {2.0f, 2.0f, 0.0f};
+	cube.position = {4.0f, 4.0f, -3.0f};
 	cube.rotation = {0.0f, 45.0f, 0.0f};
-	cube.scale = {0.4f, 0.4f, 0.4f};
+	cube.scale = {2.0f, 16.0f, 2.0f};
 
 	RenderObject gear;
 	gear.model = &testModel;

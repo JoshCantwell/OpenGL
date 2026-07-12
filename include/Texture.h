@@ -1,21 +1,22 @@
-#ifndef Texture_h
-#define Texture_h
+#pragma once
+
+
+unsigned int LoadTexture(const char* filepath);
 
 class Texture{
 
 
 
-public:
+	public:
 
-	Texture();
-	~Texture();
+		Texture();
+		~Texture();
 
-	unsigned int LoadTexture(const char* filepath);
 
-private:
+	private:
 
 
 };
 
 
-#endif /* Texture_h*/
+

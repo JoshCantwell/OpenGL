@@ -48,6 +48,14 @@ void Shader::use() const
 	glUseProgram(ID);
 }
 
+void Shader::setInt(const std::string& name, int value) const
+{
+	glUniform1i(
+			glGetUniformLocation(ID, name.c_str()),
+			value
+		   );
+}
+
 void Shader::setMat4(const std::string& name, const glm::mat4& mat) const
 {
 	glUniformMatrix4fv(
@@ -91,4 +99,23 @@ unsigned int Shader::compileShader(unsigned int type, const char* source)
 	}
 
 	return shader;
+}
+
+void Shader::setBool(const std::string& name, bool value) const
+{
+	glUniform1i(
+			glGetUniformLocation(ID, name.c_str()),
+			value ? 1 : 0
+		   );
+}
+
+void Shader::setVec3(
+		const std::string& name,
+		const glm::vec3& value) const
+{
+	glUniform3fv(
+			glGetUniformLocation(ID, name.c_str()),
+			1,
+			glm::value_ptr(value)
+		    );
 }
