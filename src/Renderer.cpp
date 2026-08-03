@@ -6,7 +6,7 @@
 #include <windows.h>
 #include <gl/GL.h>
 #include <gl/GLU.h>
-#include <ObjLoader.h>
+//#include <../Deprecated/ObjLoader.h>
 #include <MenuUI.h>
 #include <glm/gtc/matrix_transform.hpp>
 #include <glm/gtc/type_ptr.hpp>
@@ -142,7 +142,7 @@ void Renderer::draw(
 	const float tileSize = 1.0f;
 	const float floorY = -3.0f;
 
-	for (int x = -size / 2; x < size / 2; ++x)
+/*	for (int x = -size / 2; x < size / 2; ++x)
 	{
 		for (int z = -size / 2; z < size / 2; ++z)
 		{
@@ -182,7 +182,7 @@ void Renderer::draw(
 
 			glEnd();
 		}
-	}
+	}*/
 
 	glEnable(GL_LIGHTING);
 
@@ -210,6 +210,6 @@ void Renderer::draw(
 
 void Renderer::updateMovement(){
 
-	this->i += .1;
+	this->i += 1;
 	this->playerY += .1;
 }

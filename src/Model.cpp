@@ -2,7 +2,8 @@
 #include <iostream>
 #include "Texture.h"
 #include <Windows.h>
-
+#include <algorithm>
+#include <filesystem>
 
 Model::Model(const std::string& path) {
 	loadModel(path);
@@ -259,6 +260,8 @@ std::vector<MeshTexture> Model::loadMaterialTextures(
 	return textures;
 }
 
+
+
 unsigned int Model::textureFromFile(
 		const std::string& texturePath,
 		const std::string& directory)
@@ -272,8 +275,72 @@ unsigned int Model::textureFromFile(
 			'/'
 		    );
 
-	std::string fullPath =
-		directory + "/" + normalizedPath;
+	// An Assimp path beginning with * indicates an embedded texture.
+	if (!normalizedPath.empty() &&
+			normalizedPath.front() == '*')
+	{
+		std::string message =
+			"The model references an embedded texture:\n" +
+			normalizedPath +
+			"\n\nEmbedded textures are not handled by this loader yet.";
 
-	return LoadTexture(fullPath.c_str());
+		MessageBoxA(
+				nullptr,
+				message.c_str(),
+				"Embedded Texture",
+				MB_OK | MB_ICONWARNING
+			   );
+
+		return 0;
+	}
+
+	std::filesystem::path modelDirectory(directory);
+	std::filesystem::path materialTexture(normalizedPath);
+
+	std::filesystem::path fullPath;
+
+	if (materialTexture.is_absolute())
+	{
+		fullPath = materialTexture;
+	}
+	else
+	{
+		fullPath = modelDirectory / materialTexture;
+	}
+
+	fullPath = fullPath.lexically_normal();
+
+	std::string fullPathString =
+		fullPath.generic_string();
+
+	std::string message =
+		"Assimp texture path:\n" +
+		texturePath +
+		"\n\nResolved texture path:\n" +
+		fullPathString;
+
+	MessageBoxA(
+			nullptr,
+			message.c_str(),
+			"Resolved Texture Path",
+			MB_OK
+		   );
+
+	if (!std::filesystem::exists(fullPath))
+	{
+		std::string errorMessage =
+			"Texture file does not exist:\n" +
+			fullPathString;
+
+		MessageBoxA(
+				nullptr,
+				errorMessage.c_str(),
+				"Missing Texture",
+				MB_OK | MB_ICONERROR
+			   );
+
+		return 0;
+	}
+
+	return LoadTexture(fullPathString.c_str());
 }

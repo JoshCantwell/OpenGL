@@ -4,7 +4,6 @@
 #include <MenuUI.h>
 #include <AudioManager.h>
 #include <Renderer.h>
-#include <ObjLoader.h>
 #include <Windows.h>
 #include <assimp/Importer.hpp>
 #include <MenuUI.h>
@@ -13,15 +12,40 @@
 #include <Model.h>
 #include <winuser.h>
 #include <Shader.h>
+#include <Skybox.h>
+#include <glm/glm.hpp>
+#include <glm/gtc/matrix_transform.hpp>
 
 int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE, LPSTR, int) {
 
-	Window window(hInstance, 1920, 1080, "3D Sphere + Camera");
+	constexpr int windowWidth = 1920;
+	constexpr int windowHeight = 1080;
+
+	Window window(
+			hInstance,
+			windowWidth,
+			windowHeight,
+			"3D Sphere + Camera"
+		     );
+
 	Input input;
 	Camera camera;
 	Renderer renderer;
 	AudioManager audioManager;
 	MenuUI menu;
+
+	std::vector<std::string> skyboxFaces =
+	{
+		"C:/Users/joshDope/Documents/cppCode/OpenGL/Assets/Skybox/posx.jpg",
+		"C:/Users/joshDope/Documents/cppCode/OpenGL/Assets/Skybox/negx.jpg",
+		"C:/Users/joshDope/Documents/cppCode/OpenGL/Assets/Skybox/posy.jpg",
+		"C:/Users/joshDope/Documents/cppCode/OpenGL/Assets/Skybox/negy.jpg",
+		"C:/Users/joshDope/Documents/cppCode/OpenGL/Assets/Skybox/posz.jpg",
+		"C:/Users/joshDope/Documents/cppCode/OpenGL/Assets/Skybox/negz.jpg"
+	};
+
+	Skybox skybox(skyboxFaces);
+
 
 
 
@@ -46,7 +70,8 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE, LPSTR, int) {
 	audioManager.setVolume(MIX_MAX_VOLUME / 100);
 
 
-	Model testModel("C:/Users/joshDope/Documents/cppCode/OpenGL/Assets/PlanetaryGear.obj");
+
+	Model testModel("C:/Users/joshDope/Documents/cppCode/OpenGL/Assets/BrickCylinder.obj");
 
 	MessageBoxA(
 			nullptr,
@@ -55,7 +80,8 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE, LPSTR, int) {
 			MB_OK
 		   );
 
-	Model testModel2("C:/Users/joshDope/Documents/cppCode/OpenGL/Assets/BrickCylinder.obj");
+
+	Model testModel2("C:/Users/joshDope/Documents/cppCode/OpenGL/Assets/GraniteSlab.obj");
 
 
 	MessageBoxA(
@@ -75,7 +101,7 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE, LPSTR, int) {
 	gear.model = &testModel;
 	gear.position = {0.0f, 1.0f, 0.0f};
 	gear.rotation = {0.0f, 45.0f, 0.0f};
-	gear.scale = {0.05f, 0.05f, 0.05f};
+	gear.scale = {1.5f, 1.05f, 1.05f};
 
 
 
@@ -109,6 +135,40 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE, LPSTR, int) {
 
 		}
 
+
+
+		glm::vec3 cameraPosition(
+				camera.camX,
+				camera.camY,
+				camera.camZ
+				);
+
+		glm::vec3 cameraDirection(
+				camera.getDirX(),
+				camera.getDirY(),
+				camera.getDirZ()
+				);
+
+		glm::mat4 view = glm::lookAt(
+				cameraPosition,
+				cameraPosition + cameraDirection,
+				glm::vec3(0.0f, 1.0f, 0.0f)
+				);
+
+		glm::mat4 projection = glm::perspective(
+				glm::radians(60.0f),
+				static_cast<float>(windowWidth) /
+				static_cast<float>(windowHeight),
+				0.1f,
+				500.0f
+				);
+
+
+
+
+
+
+
 		input.update(window.getHWND(), isPaused); // pass HWND
 		if (isPaused) {
 			ShowCursor(TRUE);
@@ -123,6 +183,7 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE, LPSTR, int) {
 		renderer.drawObject(gear, camera);
 		renderer.drawObject(cube, camera);
 
+		skybox.Draw(view, projection);
 
 		//if (isPaused){
 		ImGui::Render();

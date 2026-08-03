@@ -1,0 +1,3 @@
+Where should this go:
+
+1. When pressing p, dont necessarily pause the game, but go into editing mode.
