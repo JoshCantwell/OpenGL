@@ -106,6 +106,103 @@ void Renderer::drawObject(const RenderObject& object, const Camera& camera) {
 
 }
 
+void Renderer::drawTerrain(
+		const Terrain& terrain,
+		const Camera& camera)
+{
+	modelShader.use();
+
+	// Terrain is already generated around the world origin,
+	// so start with an identity model matrix.
+	glm::mat4 model =
+		glm::mat4(1.0f);
+
+	const glm::vec3 cameraPosition(
+			camera.camX,
+			camera.camY,
+			camera.camZ
+			);
+
+	const glm::vec3 cameraDirection(
+			camera.getDirX(),
+			camera.getDirY(),
+			camera.getDirZ()
+			);
+
+	glm::mat4 view =
+		glm::lookAt(
+				cameraPosition,
+				cameraPosition + cameraDirection,
+				glm::vec3(0.0f, 1.0f, 0.0f)
+			   );
+
+	glm::mat4 projection =
+		glm::perspective(
+				glm::radians(60.0f),
+				1920.0f / 1080.0f,
+				0.1f,
+				500.0f
+				);
+
+	modelShader.setMat4(
+			"model",
+			model
+			);
+
+	modelShader.setMat4(
+			"view",
+			view
+			);
+
+	modelShader.setMat4(
+			"projection",
+			projection
+			);
+
+	modelShader.setVec3(
+			"cameraPosition",
+			cameraPosition
+			);
+
+	// Example light values
+	modelShader.setVec3(
+			"lightPosition",
+			glm::vec3(
+				20.0f,
+				40.0f,
+				10.0f
+				)
+			);
+
+	modelShader.setVec3(
+			"lightColor",
+			glm::vec3(
+				1.0f,
+				1.0f,
+				1.0f
+				)
+			);
+
+	modelShader.setFloat(
+			"ambientStrength",
+			0.20f
+			);
+
+	modelShader.setFloat(
+			"specularStrength",
+			0.15f
+			);
+
+	modelShader.setFloat(
+			"shininess",
+			8.0f
+			);
+
+	terrain.Draw(modelShader);
+
+	glUseProgram(0);
+}
+
 void Renderer::draw(
 		float angle,
 		const Camera& camera,
@@ -123,15 +220,15 @@ void Renderer::draw(
 	glLoadIdentity();
 
 	camera.applyView();
+	/*
+	   GLfloat matDiffuse[] = {
+	   sphereColor.r,
+	   sphereColor.g,
+	   sphereColor.b,
+	   1.0f
+	   };
 
-	GLfloat matDiffuse[] = {
-		sphereColor.r,
-		sphereColor.g,
-		sphereColor.b,
-		1.0f
-	};
-
-	glMaterialfv(GL_FRONT, GL_DIFFUSE, matDiffuse);
+	   glMaterialfv(GL_FRONT, GL_DIFFUSE, matDiffuse);
 
 	// Checkerboard floor
 	glPushMatrix();
@@ -142,47 +239,47 @@ void Renderer::draw(
 	const float tileSize = 1.0f;
 	const float floorY = -3.0f;
 
-/*	for (int x = -size / 2; x < size / 2; ++x)
+	for (int x = -size / 2; x < size / 2; ++x)
 	{
-		for (int z = -size / 2; z < size / 2; ++z)
-		{
-			bool isWhite = ((x + z) % 2 == 0);
+	for (int z = -size / 2; z < size / 2; ++z)
+	{
+	bool isWhite = ((x + z) % 2 == 0);
 
-			glColor3f(
-					isWhite ? 0.65f : 0.0f,
-					isWhite ? 1.0f : 0.0f,
-					isWhite ? 1.0f : 0.0f
-				 );
+	glColor3f(
+	isWhite ? 0.65f : 0.0f,
+	isWhite ? 1.0f : 0.0f,
+	isWhite ? 1.0f : 0.0f
+	);
 
-			glBegin(GL_QUADS);
+	glBegin(GL_QUADS);
 
-			glVertex3f(
-					x * tileSize,
-					floorY,
-					z * tileSize
-				  );
+	glVertex3f(
+	x * tileSize,
+	floorY,
+	z * tileSize
+	);
 
-			glVertex3f(
-					(x + 1) * tileSize,
-					floorY,
-					z * tileSize
-				  );
+	glVertex3f(
+	(x + 1) * tileSize,
+	floorY,
+	z * tileSize
+	);
 
-			glVertex3f(
-					(x + 1) * tileSize,
-					floorY,
-					(z + 1) * tileSize
-				  );
+	glVertex3f(
+	(x + 1) * tileSize,
+	floorY,
+	(z + 1) * tileSize
+	);
 
-			glVertex3f(
-					x * tileSize,
-					floorY,
-					(z + 1) * tileSize
-				  );
+	glVertex3f(
+	x * tileSize,
+	floorY,
+	(z + 1) * tileSize
+	);
 
-			glEnd();
-		}
-	}*/
+	glEnd();
+	}
+	}
 
 	glEnable(GL_LIGHTING);
 
@@ -205,6 +302,8 @@ void Renderer::draw(
 	glPopMatrix();
 
 	glFlush();
+
+	*/
 }
 
 

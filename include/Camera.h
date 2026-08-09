@@ -2,7 +2,7 @@
 
 class Camera {
 	public:
-		float camX = 0.0f, camY = 0.0f, camZ = 5.0f;
+		float camX = 20.0f, camY = 20.0f, camZ = 15.0f;
 		float yaw = 0.0f, pitch = 0.0f;
 
 		float velocityY = 1.0f;     // vertical velocity

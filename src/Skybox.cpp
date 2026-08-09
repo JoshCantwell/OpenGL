@@ -164,7 +164,7 @@ unsigned int Skybox::loadCubemap(
 
 	for (unsigned int i = 0; i < faces.size(); ++i)
 	{
-		std::string message =
+	/*	std::string message =
 			"Loading skybox face:\n" +
 			faces[i];
 
@@ -174,7 +174,7 @@ unsigned int Skybox::loadCubemap(
 				"Skybox Debug",
 				MB_OK
 			   );
-
+	*/
 		int width = 0;
 		int height = 0;
 		int channels = 0;
@@ -187,7 +187,7 @@ unsigned int Skybox::loadCubemap(
 				STBI_rgb
 				);
 
-		std::string imageInfo =
+		/*std::string imageInfo =
 			"Loaded:\n" +
 			faces[i] +
 			"\n\nWidth: " +
@@ -200,7 +200,7 @@ unsigned int Skybox::loadCubemap(
 				imageInfo.c_str(),
 				"Skybox Face Loaded",
 				MB_OK
-			   );
+			   );*/
 
 		if (!data)
 		{

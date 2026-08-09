@@ -1,3 +1,8 @@
 Where should this go:
 
 1. When pressing p, dont necessarily pause the game, but go into editing mode.
+
+
+Addition Notes:
+
+08/3/2026: Successfully implemented the skybox in the render. Looks amazing, may try and do a replication of the farm..

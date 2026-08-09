@@ -166,16 +166,16 @@ std::vector<MeshTexture> Model::loadMaterialTextures(
 {
 	std::vector<MeshTexture> textures;
 
-	MessageBoxA(
+	/*MessageBoxA(
 			nullptr,
 			"Entered loadMaterialTextures",
 			"Texture Debug",
 			MB_OK
-		   );
+		   );*/
 
 	unsigned int textureCount = material->GetTextureCount(type);
 
-	std::string countMessage =
+	/*std::string countMessage =
 		"Texture count: " + std::to_string(textureCount);
 
 	MessageBoxA(
@@ -183,7 +183,7 @@ std::vector<MeshTexture> Model::loadMaterialTextures(
 			countMessage.c_str(),
 			"Texture Debug",
 			MB_OK
-		   );
+		   );*/
 
 	for (unsigned int i = 0; i < textureCount; ++i)
 	{
@@ -203,12 +203,12 @@ std::vector<MeshTexture> Model::loadMaterialTextures(
 
 		std::string relativePath = assimpPath.C_Str();
 
-		MessageBoxA(
+	/*	MessageBoxA(
 				nullptr,
 				relativePath.c_str(),
 				"Assimp texture path",
 				MB_OK
-			   );
+			   );*/
 
 		bool alreadyLoaded = false;
 
@@ -224,12 +224,12 @@ std::vector<MeshTexture> Model::loadMaterialTextures(
 
 		if (!alreadyLoaded)
 		{
-			MessageBoxA(
+			/*MessageBoxA(
 					nullptr,
 					"About to call textureFromFile",
 					"Texture Debug",
 					MB_OK
-				   );
+				   );*/
 
 			MeshTexture texture;
 
@@ -313,7 +313,7 @@ unsigned int Model::textureFromFile(
 	std::string fullPathString =
 		fullPath.generic_string();
 
-	std::string message =
+	/*std::string message =
 		"Assimp texture path:\n" +
 		texturePath +
 		"\n\nResolved texture path:\n" +
@@ -324,7 +324,7 @@ unsigned int Model::textureFromFile(
 			message.c_str(),
 			"Resolved Texture Path",
 			MB_OK
-		   );
+		   );*/
 
 	if (!std::filesystem::exists(fullPath))
 	{

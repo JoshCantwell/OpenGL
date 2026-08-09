@@ -49,8 +49,8 @@ BIN      = $(OBJ_DIR)/app.exe
 INCLUDES = -Iinclude -I$(GLAD_INC) -I$(GLFW_INC) -I$(IMGUI_DIR) -I$(IMGUI_BACKENDS) -I$(SDL2_INC) -I$(SDL2_MIXER_INC) -I$(ASSIMP_INC)
 
 # Compiler flags
-CXXFLAGS = -Wall -Wextra -std=c++17 $(INCLUDES) -I$(GLM_INC)
-CFLAGS   = -Wall $(INCLUDES)
+CXXFLAGS = -Wall -Wextra -std=c++17 $(INCLUDES) -I$(GLM_INC) -MMD -MP
+CFLAGS   = -Wall $(INCLUDES) -MMD -MP
 
 # Libraries
 LIBS = -L$(GLFW_LIB) -lglfw3 -lopengl32 -lglu32 -lgdi32 -ldwmapi -L$(SDL2_LIB) -L$(SDL2_MIXER_LIB) -L$(ASSIMP_LIB) -lSDL2main -lSDL2 -lSDL2_mixer -lassimp -lz -mwindows
@@ -101,10 +101,15 @@ $(OBJ_DIR)/%.o: $(IMGUI_BACKENDS)/%.cpp | $(OBJ_DIR)
 	@echo "Compiling ImGui backend $<..."
 	$(CXX) $(CXXFLAGS) -c $< -o $@
 
-# Clean
+DEPS = $(OBJS:.o=.d)
+
+-include $(DEPS)
+
 clean:
 	@echo "Cleaning..."
-	@del /Q $(OBJ_DIR)\*.o $(BIN) 2>nul || exit 0
+	-@del /Q build\*.o 2>nul
+	-@del /Q build\*.d 2>nul
+	-@del /Q build\app.exe 2>nul
 
 .PHONY: all clean
 

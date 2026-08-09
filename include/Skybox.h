@@ -27,6 +27,8 @@ class Skybox
 		unsigned int VBO = 0;
 		unsigned int cubemapTexture = 0;
 
+		int currentSkybox = 1;
+
 		Shader shader;
 
 		unsigned int loadCubemap(

@@ -21,23 +21,23 @@ unsigned int LoadTexture(const char* path)
 		return 0;
 	}
 
-	MessageBoxA(
+	/*MessageBoxA(
 			nullptr,
 			path,
 			"LoadTexture Path",
 			MB_OK
-		   );
+		   );*/
 
 	int width = 0;
 	int height = 0;
 	int originalChannels = 0;
 
-	MessageBoxA(
+	/*MessageBoxA(
 			nullptr,
 			"About to call stbi_load",
 			"Texture Debug",
 			MB_OK
-		   );
+		   );*/
 
 	// Force every image to RGBA.
 	unsigned char* data = stbi_load(
@@ -68,7 +68,7 @@ unsigned int LoadTexture(const char* path)
 		return 0;
 	}
 
-	std::string imageInfo =
+	/*std::string imageInfo =
 		"Image successfully decoded.\n\nWidth: " +
 		std::to_string(width) +
 		"\nHeight: " +
@@ -81,7 +81,7 @@ unsigned int LoadTexture(const char* path)
 			imageInfo.c_str(),
 			"Texture Information",
 			MB_OK
-		   );
+		   );*/
 
 	unsigned int textureID = 0;
 
@@ -91,12 +91,12 @@ unsigned int LoadTexture(const char* path)
 	// RGBA rows are always multiples of four bytes.
 	glPixelStorei(GL_UNPACK_ALIGNMENT, 4);
 
-	MessageBoxA(
+	/*MessageBoxA(
 			nullptr,
 			"About to call glTexImage2D",
 			"Texture Debug",
 			MB_OK
-		   );
+		   );*/
 
 	glTexImage2D(
 			GL_TEXTURE_2D,
@@ -131,12 +131,12 @@ unsigned int LoadTexture(const char* path)
 		return 0;
 	}
 
-	MessageBoxA(
+	/*MessageBoxA(
 			nullptr,
 			"glTexImage2D returned successfully",
 			"Texture Debug",
 			MB_OK
-		   );
+		   );*/
 
 	glGenerateMipmap(GL_TEXTURE_2D);
 
@@ -184,12 +184,12 @@ unsigned int LoadTexture(const char* path)
 
 	stbi_image_free(data);
 
-	MessageBoxA(
+	/*MessageBoxA(
 			nullptr,
 			"Texture completely loaded",
 			"Texture Debug",
 			MB_OK
-		   );
+		   );*/
 
 	return textureID;
 }

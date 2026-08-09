@@ -11,6 +11,246 @@ MenuUI::~MenuUI(){
 
 }
 
+void MenuUI::SceneEditor(
+		std::vector<RenderObject>& sceneObjects)
+{
+	ImGui::Begin("Scene Objects");
+
+	static int selectedObject = -1;
+
+	// -------------------------
+	// Object list
+	// -------------------------
+	ImGui::Text("Objects in Scene");
+
+	ImGui::Separator();
+
+	for (int i = 0;
+			i < static_cast<int>(sceneObjects.size());
+			++i)
+	{
+		
+		std::string label =
+			sceneObjects[i].name +
+			"##" +
+			std::to_string(i);	
+	
+
+		bool selected =
+			selectedObject == i;
+
+		if (ImGui::Selectable(
+					label.c_str(),
+					selected))
+		{
+			selectedObject = i;
+		}
+	}
+
+	ImGui::Separator();
+
+	// -------------------------
+	// Selected object editor
+	// -------------------------
+	if (selectedObject >= 0 &&
+			selectedObject <
+			static_cast<int>(sceneObjects.size()))
+	{
+		RenderObject& object =
+			sceneObjects[selectedObject];
+
+		ImGui::Text(
+				"Editing Object %d",
+				selectedObject
+			   );
+
+		ImGui::Separator();
+
+		ImGui::DragFloat3(
+				"Position",
+				&object.position.x,
+				0.1f
+				);
+
+		ImGui::DragFloat3(
+				"Rotation",
+				&object.rotation.x,
+				1.0f
+				);
+
+		ImGui::DragFloat3(
+				"Scale",
+				&object.scale.x,
+				0.05f,
+				0.01f,
+				100.0f
+				);
+
+		ImGui::Separator();
+
+		if (ImGui::Button("Duplicate Object"))
+		{
+			RenderObject copy = object;
+
+			// Offset it slightly so it isn't directly
+			// inside the original.
+			copy.position.x += 2.0f;
+
+			sceneObjects.push_back(copy);
+		}
+
+		ImGui::SameLine();
+
+		if (ImGui::Button("Delete Object"))
+		{
+			sceneObjects.erase(
+					sceneObjects.begin() +
+					selectedObject
+					);
+
+			selectedObject = -1;
+		}
+	}
+	else
+	{
+		ImGui::Text(
+				"Select an object to edit."
+			   );
+	}
+
+	ImGui::End();
+}
+
+void MenuUI::ObjectSpawner(
+		std::vector<RenderObject>& sceneObjects,
+		Model& gearModel,
+		Model& cylinderModel,
+		Model& graniteCubeModel)
+{
+	ImGui::Begin("Add Object");
+
+	static int selectedModel = 0;
+
+	static float position[3] =
+	{
+		0.0f,
+		0.0f,
+		0.0f
+	};
+
+	static float rotation[3] =
+	{
+		0.0f,
+		0.0f,
+		0.0f
+	};
+
+	static float scale[3] =
+	{
+		1.0f,
+		1.0f,
+		1.0f
+	};
+
+	static char objectName[64] = "New Object";
+
+	const char* modelNames[] =
+	{
+		"Brick Cylinder",
+		"Granite Slab",
+		"Planetary Gear"
+	};
+
+	ImGui::Combo(
+			"Model",
+			&selectedModel,
+			modelNames,
+			IM_ARRAYSIZE(modelNames)
+		    );
+
+	ImGui::InputText(
+			"Object Name",
+			objectName,
+			IM_ARRAYSIZE(objectName)
+			);
+
+	ImGui::DragFloat3(
+			"Position",
+			position,
+			0.1f
+			);
+
+	ImGui::DragFloat3(
+			"Rotation",
+			rotation,
+			1.0f
+			);
+
+	ImGui::DragFloat3(
+			"Scale",
+			scale,
+			0.05f,
+			0.01f,
+			100.0f
+			);
+
+	if (ImGui::Button("Add Object"))
+	{
+		RenderObject object;
+
+		object.name = objectName;
+
+		switch (selectedModel)
+		{
+			case 0:
+				object.model = &gearModel;
+				break;
+
+			case 1:
+				object.model = &cylinderModel;
+				break;
+
+			case 2:
+				object.model = &graniteCubeModel;
+				break;
+		}
+
+		object.position =
+		{
+			position[0],
+			position[1],
+			position[2]
+		};
+
+		object.rotation =
+		{
+			rotation[0],
+			rotation[1],
+			rotation[2]
+		};
+
+		object.scale =
+		{
+			scale[0],
+			scale[1],
+			scale[2]
+		};
+
+		sceneObjects.push_back(object);
+
+		// Reset for the next object
+		strcpy(objectName, "New Object");
+
+		position[0] = position[1] = position[2] = 0.0f;
+
+		rotation[0] = rotation[1] = rotation[2] = 0.0f;
+
+		scale[0] = scale[1] = scale[2] = 1.0f;
+	}
+
+	ImGui::End();
+}
+
 void MenuUI::ShowDockedPanel(Camera camera) {
 	ImVec2 displaySize = ImGui::GetIO().DisplaySize;
 

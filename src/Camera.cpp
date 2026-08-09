@@ -4,6 +4,7 @@
 #include <gl/GLU.h>
 
 void Camera::update(const Input& input, float speed) {
+
 	// Mouse-based look
 	bool altHeld = false;
 	float sensitivity = 0.15f;
@@ -41,6 +42,7 @@ void Camera::update(const Input& input, float speed) {
 
 		}
 	}
+
 	float currentDirX = altHeld ? lockDirX : dirX;
 	if (input.keyDown('W')) {
 		camX += currentDirX * speed;
